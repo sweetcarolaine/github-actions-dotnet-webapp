@@ -1,0 +1,28 @@
+name: .NET Build Workflow
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 * * * *'  # Executa a cada hora
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore **/*.csproj
+
+      - name: Build project
+        run: dotnet build **/*.csproj --no-restore
+
+      - name: Custom Script - List files
+        run: ls -la
